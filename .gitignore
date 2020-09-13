@@ -1,3 +1,4 @@
 node_modules
 src/config/db.config.js
 src/config/mongo.config.js
+src/config/redis.config.js

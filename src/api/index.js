@@ -3,12 +3,11 @@ const router = express.Router();
 
 //const marsWeather = require("./mars-weather");
 const products = require("./routes/products");
-const myProducts = require("./routes/mysqlproducts");
-
+const myProducts = require("./routes/rdb.products");
 
 
 router.get("/", (req, res) => {
-  res.json({ message: "API - 👋🌎🌍🌏" });
+  res.json({ message: "grocery-ecomeerce-api" });
 });
 
 router.use("/products", products);
