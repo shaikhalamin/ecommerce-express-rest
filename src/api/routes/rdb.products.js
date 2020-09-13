@@ -289,9 +289,17 @@ router.get("/menus", async (req, res, next) => {
 
         const uniqueRoot = [...new Set(baseRoot.map(item => item.root_category))];
 
+        //console.log(uniqueRoot);
+
         let wrapData = uniqueRoot.map((item, idex) => {
 
-            let categoryMain = baseRoot.filter(pitem => pitem.root_category === item);
+            const categoryMain = [...new Set(baseRoot.filter((bitem, index, dataArray) => {
+
+                return bitem.root_category === item && typeof dataArray[index + 1] !== 'undefined' && dataArray[index + 1].parent_category !== bitem.parent_category && dataArray[index + 1].child_category !== bitem.child_category;
+
+            }))];
+
+
 
             let category = categoryMain.map((ssitem, index) => {
 
@@ -299,8 +307,8 @@ router.get("/menus", async (req, res, next) => {
 
                 categoryObj.parent_category = ssitem.parent_category;
 
-                let subcategory = baseRoot.filter(spitem => spitem.parent_category === ssitem.parent_category && spitem.child_category !== ssitem.parent_category);
-
+                let subcategory = [...new Set(baseRoot.filter(spitem => spitem.parent_category === ssitem.parent_category && spitem.child_category != spitem.parent_category))];
+                //console.log(subcategory);
                 let subCategory = subcategory.map((scobj, index) => {
                     return scobj.child_category;
                 })
