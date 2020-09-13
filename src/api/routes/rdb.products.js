@@ -277,7 +277,7 @@ router.get("/bulk", async (req, res, next) => {
 router.get("/menus", async (req, res, next) => {
     try {
 
-        const menuList = await Product.findAll({ attributes: ['root_category', 'parent_category', 'child_category'], group: ['root_category', 'parent_category', 'child_category'], });
+        const menuList = await Product.findAll({ order: [['root_category', 'ASC']], attributes: ['root_category', 'parent_category', 'child_category'], group: ['root_category', 'parent_category', 'child_category'] });
 
         const baseRoot = menuList.map((item, i) => {
             let newObj = {}
@@ -333,30 +333,12 @@ router.get("/menus", async (req, res, next) => {
 });
 
 
-
-
-
-router.get("/", async (req, res, next) => {
-    try {
-        const mysqlProduct = await Product.findAll();
-
-        console.log('mysql query executing ...', mysqlProduct);
-
-        res.status(200).json({
-            data: mysqlProduct
-        });
-    } catch (err) {
-        console.log(err);
-    }
-});
-
-router.get("/:parent_category/:child_category", async (req, res, next) => {
+router.get("/:child_category", async (req, res, next) => {
     try {
 
-        const parent_category = req.params.parent_category;
         const child_category = req.params.child_category;
 
-        const mysqlProduct = await Product.findAll({ where: { parent_category: parent_category, child_category: child_category } });
+        const mysqlProduct = await Product.findAll({ where: { child_category: child_category } });
 
         console.log('mysql query executing ...', mysqlProduct.length);
 
